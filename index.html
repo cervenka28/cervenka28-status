@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CERVENKA28 AI</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #090611;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 35px 15px;
+}
+
+header h1 {
+    color: #c084fc;
+    font-size: 36px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 25px #9333ea;
+}
+
+header p {
+    color: #aaa;
+    margin-top: 10px;
+    letter-spacing: 4px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+.section-title {
+    color: #d8b4fe;
+    margin: 25px 0 15px;
+    font-size: 22px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: #151020;
+    border: 1px solid #54247d;
+    border-radius: 16px;
+    padding: 24px;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 20px #6b21a8;
+}
+
+.card h2 {
+    color: #d8b4fe;
+    margin-bottom: 18px;
+}
+
+.status {
+    margin: 14px 0;
+    color: #ccc;
+}
+
+.dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-right: 10px;
+    box-shadow: 0 0 10px #22c55e;
+}
+
+/* AI CHAT */
+
+.ai-card {
+    margin-top: 20px;
+}
+
+.chat-box {
+    background: #090611;
+    border: 1px solid #54247d;
+    border-radius: 12px;
+    height: 300px;
+    padding: 15px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.message {
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 85%;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.bot {
+    background: #28143d;
+    border: 1px solid #7135a5;
+}
+
+.user {
+    background: #54247d;
+    margin-left: auto;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #7135a5;
+    background: #090611;
+    color: white;
+    outline: none;
+}
+
+.chat-input button {
+    padding: 14px 20px;
+    background: #9333ea;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.chat-input button:hover {
+    background: #a855f7;
+}
+
+.connect-area {
+    text-align: center;
+    margin: 45px 0;
+}
+
+.connect {
+    display: inline-block;
+    padding: 18px 65px;
+    background: linear-gradient(120deg,#7e22ce,#c026d3);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 5px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px #9333ea;
+    transition: .3s;
+}
+
+.connect:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 40px #c026d3;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    padding: 25px;
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>CERVENKA28</h1>
+    <p>AI & STATUS CENTER</p>
+</header>
+
+<div class="container">
+
+    <h2 class="section-title">🤖 AI Assistant</h2>
+
+    <div class="card ai-card">
+
+        <h2>CERVENKA28 AI</h2>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">
+                Hello! I am CERVENKA28 AI. How can I help you?
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Ask me something..."
+                onkeydown="if(event.key==='Enter') sendMessage()"
+            >
+            <button onclick="sendMessage()">SEND</button>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">🌐 Website Status</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>Website Status</h2>
+
+            <div class="status">
+                <span class="dot"></span>CERVENKA28 PORTAL
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>CERVENKA28 CONNECT
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>guns.lol
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Project Status</h2>
+
+            <div class="status">
+                <span class="dot"></span>Website Projects
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>Roblox Projects
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>Minecraft Projects
+            </div>
+        </div>
+
+    </div>
+
+    <div class="connect-area">
+        <a class="connect"
+           href="https://cervenka28.github.io/CERVERNKA28-PORTAL-CONNECT-LOBBY/">
+           CONNECT
+        </a>
+    </div>
+
+</div>
+
+<footer>
+    CERVENKA28 AI © 2026
+</footer>
+
+<script>
+
+// AI BACKEND CONNECTION
+// Add your secure backend endpoint here.
+// Never put your private AI API key in this file.
+
+const AI_ENDPOINT = "";
+
+async function sendMessage() {
+
+    const input = document.getElementById("userInput");
+    const chatBox = document.getElementById("chatBox");
+
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    addMessage(message, "user");
+    input.value = "";
+
+    if (!AI_ENDPOINT) {
+        addMessage(
+            "AI backend is not connected yet. Connect a secure AI backend to activate real AI responses.",
+            "bot"
+        );
+        return;
+    }
+
+    const loading = addMessage("Thinking...", "bot");
+
+    try {
+
+        const response = await fetch(AI_ENDPOINT, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("AI server error");
+        }
+
+        const data = await response.json();
+
+        loading.textContent = data.reply || "No response received.";
+
+    } catch (error) {
+
+        loading.textContent =
+            "Sorry, the AI server could not be reached.";
+
+    }
+
+}
+
+function addMessage(text, type) {
+
+    const chatBox = document.getElementById("chatBox");
+    const message = document.createElement("div");
+
+    message.className = "message " + type;
+    message.textContent = text;
+
+    chatBox.appendChild(message);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    return message;
+}
+
+</script>
+
+</body>
+</html>
