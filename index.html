@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,20 +14,20 @@
 }
 
 body {
+    min-height: 100vh;
     background: #090611;
     color: white;
     font-family: Arial, sans-serif;
-    min-height: 100vh;
 }
 
 header {
     text-align: center;
-    padding: 40px 15px;
+    padding: 45px 15px;
 }
 
 header h1 {
     color: #c084fc;
-    font-size: 36px;
+    font-size: 38px;
     letter-spacing: 5px;
     text-shadow: 0 0 25px #9333ea;
 }
@@ -88,8 +89,6 @@ header p {
     box-shadow: 0 0 10px #22c55e;
 }
 
-/* AI CHAT */
-
 .chat-box {
     background: #090611;
     border: 1px solid #54247d;
@@ -150,6 +149,11 @@ header p {
     background: #a855f7;
 }
 
+.chat-input button:disabled {
+    opacity: .5;
+    cursor: wait;
+}
+
 .connect-area {
     text-align: center;
     margin: 55px 0 30px;
@@ -196,8 +200,8 @@ footer {
 <body>
 
 <header>
-    <h1>CERVENKA28</h1>
-    <p>AI & STATUS CENTER</p>
+    <h1>CERVENKA28 AI</h1>
+    <p>YOUR PERSONAL AI CENTER</p>
 </header>
 
 <div class="container">
@@ -205,8 +209,7 @@ footer {
     <h2 class="section-title">🤖 AI Assistant</h2>
 
     <div class="card">
-
-        <h2>CERVENKA28 AI</h2>
+        <h2>CERVENKA28 AI Assistant</h2>
 
         <div class="chat-box" id="chatBox">
             <div class="message bot">
@@ -224,7 +227,6 @@ footer {
             >
             <button id="sendButton" onclick="sendMessage()">SEND</button>
         </div>
-
     </div>
 
     <h2 class="section-title">🌐 Website Status</h2>
@@ -280,9 +282,8 @@ footer {
 
 <script>
 
-// CERVENKA28 AI BACKEND
-
-const AI_ENDPOINT = "https://winter-block-476acervenka28ai.samko-cervenka.workers.dev";
+const AI_ENDPOINT =
+"https://winter-block-476acervenka28ai.samko-cervenka.workers.dev";
 
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
@@ -314,7 +315,6 @@ async function sendMessage() {
     const loading = addMessage("Thinking...", "bot");
 
     try {
-
         const response = await fetch(AI_ENDPOINT, {
             method: "POST",
             headers: {
@@ -331,22 +331,19 @@ async function sendMessage() {
             throw new Error(data.error || "AI server error.");
         }
 
-        loading.textContent =
-            data.reply || "No response received.";
+        loading.textContent = data.reply || "No response received.";
 
     } catch (error) {
 
         loading.textContent =
-            "Connection error. Please try again later.";
+            "Connection error: " + error.message;
 
         console.error(error);
 
     } finally {
-
         sendButton.disabled = false;
         sendButton.textContent = "SEND";
         chatBox.scrollTop = chatBox.scrollHeight;
-
     }
 }
 
@@ -360,3 +357,4 @@ userInput.addEventListener("keydown", function(event) {
 
 </body>
 </html>
+```
