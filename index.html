@@ -21,7 +21,7 @@ body {
 
 header {
     text-align: center;
-    padding: 35px 15px;
+    padding: 40px 15px;
 }
 
 header h1 {
@@ -33,7 +33,7 @@ header h1 {
 
 header p {
     color: #aaa;
-    margin-top: 10px;
+    margin-top: 12px;
     letter-spacing: 4px;
 }
 
@@ -45,27 +45,21 @@ header p {
 
 .section-title {
     color: #d8b4fe;
-    margin: 25px 0 15px;
+    margin: 30px 0 15px;
     font-size: 22px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 18px;
 }
 
 .card {
     background: #151020;
     border: 1px solid #54247d;
-    border-radius: 16px;
-    padding: 24px;
+    border-radius: 18px;
+    padding: 25px;
     transition: .3s;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 20px #6b21a8;
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px #6b21a8;
 }
 
 .card h2 {
@@ -73,8 +67,14 @@ header p {
     margin-bottom: 18px;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+}
+
 .status {
-    margin: 14px 0;
+    margin: 15px 0;
     color: #ccc;
 }
 
@@ -90,15 +90,11 @@ header p {
 
 /* AI CHAT */
 
-.ai-card {
-    margin-top: 20px;
-}
-
 .chat-box {
     background: #090611;
     border: 1px solid #54247d;
     border-radius: 12px;
-    height: 300px;
+    height: 350px;
     padding: 15px;
     overflow-y: auto;
     margin-bottom: 15px;
@@ -111,6 +107,7 @@ header p {
     max-width: 85%;
     line-height: 1.5;
     overflow-wrap: anywhere;
+    white-space: pre-wrap;
 }
 
 .bot {
@@ -140,7 +137,7 @@ header p {
 }
 
 .chat-input button {
-    padding: 14px 20px;
+    padding: 14px 22px;
     background: #9333ea;
     color: white;
     border: none;
@@ -155,7 +152,7 @@ header p {
 
 .connect-area {
     text-align: center;
-    margin: 45px 0;
+    margin: 55px 0 30px;
 }
 
 .connect {
@@ -183,6 +180,16 @@ footer {
     font-size: 12px;
     letter-spacing: 3px;
 }
+
+@media(max-width:500px) {
+    header h1 {
+        font-size: 27px;
+    }
+
+    .chat-input button {
+        padding: 12px;
+    }
+}
 </style>
 </head>
 
@@ -197,13 +204,14 @@ footer {
 
     <h2 class="section-title">🤖 AI Assistant</h2>
 
-    <div class="card ai-card">
+    <div class="card">
 
         <h2>CERVENKA28 AI</h2>
 
         <div class="chat-box" id="chatBox">
             <div class="message bot">
-                Hello! I am CERVENKA28 AI. How can I help you?
+                Hello! I am CERVENKA28 AI.
+                How can I help you today?
             </div>
         </div>
 
@@ -211,10 +219,10 @@ footer {
             <input
                 type="text"
                 id="userInput"
-                placeholder="Ask me something..."
-                onkeydown="if(event.key==='Enter') sendMessage()"
+                placeholder="Ask me anything..."
+                maxlength="4000"
             >
-            <button onclick="sendMessage()">SEND</button>
+            <button id="sendButton" onclick="sendMessage()">SEND</button>
         </div>
 
     </div>
@@ -272,31 +280,36 @@ footer {
 
 <script>
 
-// AI BACKEND CONNECTION
-// Add your secure backend endpoint here.
-// Never put your private AI API key in this file.
+// CERVENKA28 AI BACKEND
 
-const AI_ENDPOINT = "";
+const AI_ENDPOINT = "https://winter-block-476acervenka28ai.samko-cervenka.workers.dev";
+
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+const sendButton = document.getElementById("sendButton");
+
+function addMessage(text, type) {
+    const message = document.createElement("div");
+    message.className = "message " + type;
+    message.textContent = text;
+
+    chatBox.appendChild(message);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    return message;
+}
 
 async function sendMessage() {
 
-    const input = document.getElementById("userInput");
-    const chatBox = document.getElementById("chatBox");
+    const message = userInput.value.trim();
 
-    const message = input.value.trim();
-
-    if (!message) return;
+    if (!message || sendButton.disabled) return;
 
     addMessage(message, "user");
-    input.value = "";
 
-    if (!AI_ENDPOINT) {
-        addMessage(
-            "AI backend is not connected yet. Connect a secure AI backend to activate real AI responses.",
-            "bot"
-        );
-        return;
-    }
+    userInput.value = "";
+    sendButton.disabled = true;
+    sendButton.textContent = "...";
 
     const loading = addMessage("Thinking...", "bot");
 
@@ -312,36 +325,36 @@ async function sendMessage() {
             })
         });
 
-        if (!response.ok) {
-            throw new Error("AI server error");
-        }
-
         const data = await response.json();
 
-        loading.textContent = data.reply || "No response received.";
+        if (!response.ok) {
+            throw new Error(data.error || "AI server error.");
+        }
+
+        loading.textContent =
+            data.reply || "No response received.";
 
     } catch (error) {
 
         loading.textContent =
-            "Sorry, the AI server could not be reached.";
+            "Connection error. Please try again later.";
+
+        console.error(error);
+
+    } finally {
+
+        sendButton.disabled = false;
+        sendButton.textContent = "SEND";
+        chatBox.scrollTop = chatBox.scrollHeight;
 
     }
-
 }
 
-function addMessage(text, type) {
-
-    const chatBox = document.getElementById("chatBox");
-    const message = document.createElement("div");
-
-    message.className = "message " + type;
-    message.textContent = text;
-
-    chatBox.appendChild(message);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    return message;
-}
+userInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
 
 </script>
 
